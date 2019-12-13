@@ -1,13 +1,17 @@
 import React, { Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-export default function Home({ messages, friends }) {
+export default function FriendDetails({ friend }) {
+  const router = useRouter();
+  const { name } = router.query;
+
   return (
     <Fragment>
       <div className="container">
         <header>
           <nav>
-            <h1>Home</h1>
+            <h1>Friend Details</h1>
             <ul>
               <li>
                 <Link href="/messages">
@@ -24,10 +28,16 @@ export default function Home({ messages, friends }) {
         </header>
         <main>
           <section>
+            <h2>Info</h2>
+            <p>
+              Name: <strong>{friend.displayName}</strong>
+            </p>
+            <p>{friend.seen}</p>
+            <p>{friend.friendSince}</p>
             <h2>Latest Messages</h2>
             <ul className="itemList">
-              {messages.map(message => (
-                <li key={message.id} className="messageItem">
+              {friend.latestMessages.map(message => (
+                <li className="messageItem">
                   <div>{message.content}</div>
                   <div>
                     <Link href={`/friends/${message.from.name}`}>
@@ -42,16 +52,9 @@ export default function Home({ messages, friends }) {
             </ul>
           </section>
           <section>
-            <h2>Online</h2>
-            <ul className="itemList">
-              {friends.map(friend => (
-                <li key={friend.name}>
-                  <Link href={`/friends/${friend.name}`}>
-                    <a>{friend.displayName}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Link href={`/new/message/${friend.name}`}>
+              <button className="newMessage">New Message</button>
+            </Link>
           </section>
         </main>
       </div>
@@ -111,13 +114,13 @@ export default function Home({ messages, friends }) {
         nav a:hover {
           color: #68b5fb;
         }
-        nav h1 {
-          margin: unset;
-        }
         header {
           padding: 0.2rem;
           color: #fff;
           background-color: #333;
+        }
+        nav h1 {
+          margin: unset;
         }
         .itemList {
           list-style: none;
@@ -138,36 +141,37 @@ export default function Home({ messages, friends }) {
           justify-content: space-between;
           width: 120px;
         }
+        .newMessage {
+          font-family: inherit;
+          margin-top: 10px;
+          font-weight: 500;
+        }
       `}</style>
     </Fragment>
   );
 }
 
-Home.getInitialProps = async function() {
+FriendDetails.getInitialProps = async function() {
   return {
-    messages: [
-      {
-        id: 1,
-        sent: "2 minutes ago",
-        content: "Did you see this?",
-        from: { name: "josh", displayName: "Josh" }
-      },
-      {
-        id: 2,
-        sent: "1 hour ago",
-        content: "I can't tell if it's on or not...",
-        from: { name: "beth", displayName: "Beth" }
-      },
-      {
-        id: 3,
-        sent: "3 hours ago",
-        content: "You don't need it for another week?",
-        from: { name: "ryan", displayName: "Ryan" }
-      }
-    ],
-    friends: [
-      { name: "beth", displayName: "Beth" },
-      { name: "ryan", displayName: "Ryan" }
-    ]
+    friend: {
+      name: "josh",
+      displayName: "Josh",
+      friendSince: "Friends since 2014",
+      seen: "Last seen 3 hours ago",
+      latestMessages: [
+        {
+          id: 1,
+          sent: "1 hour ago",
+          content: "Nope. I don't have it.",
+          from: { name: "josh", displayName: "Josh" }
+        },
+        {
+          id: 2,
+          sent: "2 minutes ago",
+          content: "Did you see this?",
+          from: { name: "josh", displayName: "Josh" }
+        }
+      ]
+    }
   };
 };

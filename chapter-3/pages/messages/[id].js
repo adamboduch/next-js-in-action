@@ -1,13 +1,17 @@
 import React, { Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-export default function Home({ messages, friends }) {
+export default function MessageDetails({ message }) {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <Fragment>
       <div className="container">
         <header>
           <nav>
-            <h1>Home</h1>
+            <h1>Message Details</h1>
             <ul>
               <li>
                 <Link href="/messages">
@@ -24,34 +28,18 @@ export default function Home({ messages, friends }) {
         </header>
         <main>
           <section>
-            <h2>Latest Messages</h2>
-            <ul className="itemList">
-              {messages.map(message => (
-                <li key={message.id} className="messageItem">
-                  <div>{message.content}</div>
-                  <div>
-                    <Link href={`/friends/${message.from.name}`}>
-                      <a>{message.from.displayName}</a>
-                    </Link>{" "}
-                    <Link href={`/messages/${message.id}`}>
-                      <a>{message.sent}</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <p>
+              From:{" "}
+              <Link href={`/friends/${message.from.name}`}>
+                <a>{message.from.displayName}</a>
+              </Link>
+            </p>
+            <p>{message.content}</p>
           </section>
           <section>
-            <h2>Online</h2>
-            <ul className="itemList">
-              {friends.map(friend => (
-                <li key={friend.name}>
-                  <Link href={`/friends/${friend.name}`}>
-                    <a>{friend.displayName}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Link href={`/new/message/${message.from.name}`}>
+              <button className="reply">Reply</button>
+            </Link>
           </section>
         </main>
       </div>
@@ -111,63 +99,35 @@ export default function Home({ messages, friends }) {
         nav a:hover {
           color: #68b5fb;
         }
-        nav h1 {
-          margin: unset;
-        }
         header {
           padding: 0.2rem;
           color: #fff;
           background-color: #333;
         }
-        .itemList {
-          list-style: none;
+        nav h1 {
           margin: unset;
-          padding-left: 0;
         }
-        .messageItem {
-          width: 400px;
-          display: flex;
-          justify-content: space-between;
-        }
-        .messageItem a:last-of-type {
-          font-size: small;
-        }
-        .messageItem div:last-of-type {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 120px;
+        .reply {
+          font-family: inherit;
+          margin-top: 10px;
+          font-weight: 500;
         }
       `}</style>
     </Fragment>
   );
 }
 
-Home.getInitialProps = async function() {
+MessageDetails.getInitialProps = async function() {
   return {
-    messages: [
-      {
-        id: 1,
-        sent: "2 minutes ago",
-        content: "Did you see this?",
-        from: { name: "josh", displayName: "Josh" }
-      },
-      {
-        id: 2,
-        sent: "1 hour ago",
-        content: "I can't tell if it's on or not...",
-        from: { name: "beth", displayName: "Beth" }
-      },
-      {
-        id: 3,
-        sent: "3 hours ago",
-        content: "You don't need it for another week?",
-        from: { name: "ryan", displayName: "Ryan" }
+    message: {
+      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+      enim ad minim veniam, quis nostrud exercitation ullamco laboris
+      nisi ut aliquip ex ea commodo consequat.`,
+      from: {
+        name: "beth",
+        displayName: "Beth"
       }
-    ],
-    friends: [
-      { name: "beth", displayName: "Beth" },
-      { name: "ryan", displayName: "Ryan" }
-    ]
+    }
   };
 };

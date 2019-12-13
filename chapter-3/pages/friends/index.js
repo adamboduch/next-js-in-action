@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
 import Link from "next/link";
+import Messages from "../messages";
 
-export default function Home({ messages, friends }) {
+export default function Friends({ friends }) {
   return (
     <Fragment>
       <div className="container">
         <header>
           <nav>
-            <h1>Home</h1>
+            <h1>Friends</h1>
             <ul>
               <li>
                 <Link href="/messages">
@@ -24,34 +25,21 @@ export default function Home({ messages, friends }) {
         </header>
         <main>
           <section>
-            <h2>Latest Messages</h2>
             <ul className="itemList">
-              {messages.map(message => (
-                <li key={message.id} className="messageItem">
-                  <div>{message.content}</div>
-                  <div>
-                    <Link href={`/friends/${message.from.name}`}>
-                      <a>{message.from.displayName}</a>
-                    </Link>{" "}
-                    <Link href={`/messages/${message.id}`}>
-                      <a>{message.sent}</a>
-                    </Link>
-                  </div>
+              {friends.map(friend => (
+                <li className="friendItem">
+                  <Link href={`/friends/${friend.name}`}>
+                    <a>{friend.displayName}</a>
+                  </Link>
+                  <div>{friend.seen}</div>
                 </li>
               ))}
             </ul>
           </section>
           <section>
-            <h2>Online</h2>
-            <ul className="itemList">
-              {friends.map(friend => (
-                <li key={friend.name}>
-                  <Link href={`/friends/${friend.name}`}>
-                    <a>{friend.displayName}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Link href="/new/friend">
+              <button className="newFriend">New Friend</button>
+            </Link>
           </section>
         </main>
       </div>
@@ -111,63 +99,43 @@ export default function Home({ messages, friends }) {
         nav a:hover {
           color: #68b5fb;
         }
-        nav h1 {
-          margin: unset;
-        }
         header {
           padding: 0.2rem;
           color: #fff;
           background-color: #333;
+        }
+        nav h1 {
+          margin: unset;
         }
         .itemList {
           list-style: none;
           margin: unset;
           padding-left: 0;
         }
-        .messageItem {
-          width: 400px;
+        .friendItem {
+          width: 350px;
           display: flex;
           justify-content: space-between;
         }
-        .messageItem a:last-of-type {
+        .friendItem div:last-of-type {
           font-size: small;
         }
-        .messageItem div:last-of-type {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 120px;
+        .newFriend {
+          font-family: inherit;
+          margin-top: 10px;
+          font-weight: 500;
         }
       `}</style>
     </Fragment>
   );
 }
 
-Home.getInitialProps = async function() {
+Friends.getInitialProps = async function() {
   return {
-    messages: [
-      {
-        id: 1,
-        sent: "2 minutes ago",
-        content: "Did you see this?",
-        from: { name: "josh", displayName: "Josh" }
-      },
-      {
-        id: 2,
-        sent: "1 hour ago",
-        content: "I can't tell if it's on or not...",
-        from: { name: "beth", displayName: "Beth" }
-      },
-      {
-        id: 3,
-        sent: "3 hours ago",
-        content: "You don't need it for another week?",
-        from: { name: "ryan", displayName: "Ryan" }
-      }
-    ],
     friends: [
-      { name: "beth", displayName: "Beth" },
-      { name: "ryan", displayName: "Ryan" }
+      { name: "josh", displayName: "Josh", seen: "last seen 12 minutes ago" },
+      { name: "beth", displayName: "Beth", seen: "last seen 2 hours ago" },
+      { name: "ryan", displayName: "Ryan", seen: "online now" }
     ]
   };
 };

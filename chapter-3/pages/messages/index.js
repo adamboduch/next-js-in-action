@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import Link from "next/link";
 
-export default function Home({ messages, friends }) {
+export default function Messages({ messages }) {
   return (
     <Fragment>
       <div className="container">
         <header>
           <nav>
-            <h1>Home</h1>
+            <h1>Messages</h1>
             <ul>
               <li>
                 <Link href="/messages">
@@ -23,36 +23,21 @@ export default function Home({ messages, friends }) {
           </nav>
         </header>
         <main>
-          <section>
-            <h2>Latest Messages</h2>
-            <ul className="itemList">
-              {messages.map(message => (
-                <li key={message.id} className="messageItem">
-                  <div>{message.content}</div>
-                  <div>
-                    <Link href={`/friends/${message.from.name}`}>
-                      <a>{message.from.displayName}</a>
-                    </Link>{" "}
-                    <Link href={`/messages/${message.id}`}>
-                      <a>{message.sent}</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <section>
-            <h2>Online</h2>
-            <ul className="itemList">
-              {friends.map(friend => (
-                <li key={friend.name}>
-                  <Link href={`/friends/${friend.name}`}>
-                    <a>{friend.displayName}</a>
+          <ul className="itemList">
+            {messages.map(message => (
+              <li key={message.id} className="messageItem">
+                <div>{message.content}</div>
+                <div>
+                  <Link href={`/friends/${message.from.name}`}>
+                    <a>{message.from.displayName}</a>
+                  </Link>{" "}
+                  <Link href={`/messages/${message.id}`}>
+                    <a>{message.sent}</a>
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
+                </div>
+              </li>
+            ))}
+          </ul>
         </main>
       </div>
       <style jsx global>{`
@@ -111,18 +96,19 @@ export default function Home({ messages, friends }) {
         nav a:hover {
           color: #68b5fb;
         }
-        nav h1 {
-          margin: unset;
-        }
         header {
           padding: 0.2rem;
           color: #fff;
           background-color: #333;
         }
+        nav h1 {
+          margin: unset;
+        }
         .itemList {
           list-style: none;
           margin: unset;
           padding-left: 0;
+          padding-top: 10px;
         }
         .messageItem {
           width: 400px;
@@ -143,7 +129,7 @@ export default function Home({ messages, friends }) {
   );
 }
 
-Home.getInitialProps = async function() {
+Messages.getInitialProps = async function() {
   return {
     messages: [
       {
@@ -164,10 +150,6 @@ Home.getInitialProps = async function() {
         content: "You don't need it for another week?",
         from: { name: "ryan", displayName: "Ryan" }
       }
-    ],
-    friends: [
-      { name: "beth", displayName: "Beth" },
-      { name: "ryan", displayName: "Ryan" }
     ]
   };
 };
