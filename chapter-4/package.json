@@ -6,9 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.0.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
-    "react-minimal-pie-chart": "^5.0.0"
+    "next": "^9.1.5",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   }
 }

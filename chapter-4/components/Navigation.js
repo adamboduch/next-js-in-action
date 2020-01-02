@@ -1,34 +1,47 @@
-import React, { memo } from 'react';
+import React, { Fragment } from "react";
+import { resolve } from "styled-jsx/css";
+import Link from "./Link";
 
-function Navigation({ links }) {
+const { className: linkClassName, styles: linkStyles } = resolve`
+  a {
+    color: #fff;
+  }
+  a:hover {
+    color: #68b5fb;
+  }
+`;
+
+export default function Navigation() {
   return (
-    <ul
-      style={{
-        listStyleType: 'none',
-        padding: 0,
-        margin: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        minWidth: 300
-      }}
-    >
-      {links.map(link => (
-        <li key={link.path}>
-          <a href={link.path}>{link.text}</a>
-        </li>
-      ))}
-    </ul>
+    <Fragment>
+      <nav>
+        <ul>
+          <li>
+            <Link href="/" text="Home" className={linkClassName} />
+          </li>
+          <li>
+            <Link href="/messages" text="Messages" className={linkClassName} />
+          </li>
+          <li>
+            <Link href="/friends" text="Friends" className={linkClassName} />
+          </li>
+        </ul>
+      </nav>
+      <style jsx>{`
+        nav ul {
+          display: flex;
+          list-style: none;
+          margin: unset;
+          padding-left: 0;
+        }
+        nav li {
+          margin-right: 1rem;
+        }
+        nav li:first-child {
+          margin-left: auto;
+        }
+      `}</style>
+      {linkStyles}
+    </Fragment>
   );
 }
-
-Navigation.defaultProps = {
-  links: [
-    { path: '/', text: 'Home' },
-    { path: '/expense', text: 'New Expense' },
-    { path: '/reports', text: 'Reports' },
-    { path: '/history', text: 'History' }
-  ]
-};
-
-export default memo(Navigation);

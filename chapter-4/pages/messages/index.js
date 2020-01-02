@@ -1,24 +1,16 @@
 import React from "react";
-import Layout from "../components/Layout";
-import MessageList from "../components/MessageList";
-import FriendList from "../components/FriendList";
+import Layout from "../../components/Layout";
+import MessageList from "../../components/MessageList";
 
-export default function Home({ messages, friends }) {
+export default function Messages({ messages }) {
   return (
-    <Layout title="Home">
-      <section>
-        <h2>Latest Messages</h2>
-        <MessageList messages={messages} />
-      </section>
-      <section>
-        <h2>Online</h2>
-        <FriendList friends={friends} />
-      </section>
+    <Layout title="Messages">
+      <MessageList messages={messages} />
     </Layout>
   );
 }
 
-Home.getInitialProps = async function() {
+Messages.getInitialProps = async function() {
   return {
     messages: [
       {
@@ -39,10 +31,6 @@ Home.getInitialProps = async function() {
         content: "You don't need it for another week?",
         from: { name: "ryan", displayName: "Ryan" }
       }
-    ],
-    friends: [
-      { name: "beth", displayName: "Beth" },
-      { name: "ryan", displayName: "Ryan" }
     ]
   };
 };
