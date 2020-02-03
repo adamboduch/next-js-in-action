@@ -1,0 +1,11 @@
+div.root > p:first-of-type {
+  font-weight: bold;
+}
+
+div.root > p:last-of-type {
+  font-style: italic;
+}
+
+.root span {
+  text-decoration: underline;
+}
